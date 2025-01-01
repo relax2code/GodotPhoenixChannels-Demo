@@ -4,8 +4,8 @@ import Config
 # debugging and code reloading.
 #
 # The watchers configuration can be used to run external
-# watchers to your application. For example, we use it
-# with esbuild to bundle .js and .css sources.
+# watchers to your application. For example, we can use it
+# to bundle .js and .css sources.
 config :server, GodotServerWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
@@ -13,8 +13,10 @@ config :server, GodotServerWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "OSK+I5CY4ntmWb0OZSU11m6otqaS9JwkgetUSrMGgM9uRfk9gmQlxVYmhSPyv8iN",
-  watchers: []
+  secret_key_base: "FZU0xzXEvC3trSwW3cTeToC9yPf/SZgYs1oCgpwcxVGt01diDCfB9qkbHRSao6rE",
+  watchers: [
+    esbuild: {Esbuild, :install_and_run, [:server, ~w(--sourcemap=inline --watch)]}
+  ]
 
 # ## SSL Support
 #
@@ -24,7 +26,6 @@ config :server, GodotServerWeb.Endpoint,
 #
 #     mix phx.gen.cert
 #
-# Note that this task requires Erlang/OTP 20 or later.
 # Run `mix help phx.gen.cert` for more information.
 #
 # The `http:` config above can be replaced with:
@@ -39,6 +40,9 @@ config :server, GodotServerWeb.Endpoint,
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
+
+# Enable dev routes for dashboard and mailbox
+config :server, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

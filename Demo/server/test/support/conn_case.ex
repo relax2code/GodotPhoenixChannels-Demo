@@ -19,15 +19,15 @@ defmodule GodotServerWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint GodotServerWeb.Endpoint
+
+      use GodotServerWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
       import GodotServerWeb.ConnCase
-
-      alias GodotServerWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint GodotServerWeb.Endpoint
     end
   end
 

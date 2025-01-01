@@ -1,7 +1,7 @@
 defmodule GodotServerWeb.GameChannel do
   use GodotServerWeb, :channel
 
-  alias GodotServerWeb.{Presence, Socket}
+  alias GodotServerWeb.Presence
 
   @impl true
   def join("game:" <> _match_id, _params, socket) do
@@ -36,9 +36,7 @@ defmodule GodotServerWeb.GameChannel do
     {:reply, {:ok, %{pong: "success!"}}, socket}
   end
 
-  @doc """
-  A quick way to test broadcasting
-  """
+  # A quick way to test broadcasting
   defp should_broadcast?(%{"broadcast" => true} = params, socket, event), do:
     broadcast!(socket, event, params)
   defp should_broadcast?(_, _, _), do: :ok

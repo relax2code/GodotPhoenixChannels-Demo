@@ -8,15 +8,14 @@ defmodule GodotServer.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Telemetry supervisor
       GodotServerWeb.Telemetry,
-      # Start the PubSub system
+      {DNSCluster, query: Application.get_env(:server, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GodotServer.PubSub},
       GodotServerWeb.Presence,
-      # Start the Endpoint (http/https)
-      GodotServerWeb.Endpoint
       # Start a worker by calling: GodotServer.Worker.start_link(arg)
-      # {GodotServer.Worker, arg}
+      # {GodotServer.Worker, arg},
+      # Start to serve requests, typically the last entry
+      GodotServerWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

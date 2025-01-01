@@ -8,14 +8,29 @@
 import Config
 
 config :server,
-  namespace: GodotServer
+  namespace: GodotServer,
+  generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :server, GodotServerWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: GodotServerWeb.ErrorView, accepts: ~w(json), layout: false],
+  adapter: Bandit.PhoenixAdapter,
+  render_errors: [
+    formats: [json: GodotServerWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: GodotServer.PubSub,
-  live_view: [signing_salt: "pCQA0Vqy"]
+  live_view: [signing_salt: "aIJhdZoY"]
+
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.17.11",
+  server: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
